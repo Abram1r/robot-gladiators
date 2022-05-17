@@ -41,9 +41,15 @@ if (promptFight === "" || promptFight === null) {
 
 // fight function (now with parameter for enemy's object holding name, health, and attack values)
 var fight = function(enemy) {
+  // keep track of who goes first
+  var isPlayerTurn = true;
+  // randomly change turn order
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
   while (playerInfo.health > 0 && enemy.health > 0) {
-    // ask player if they'd like to fight or run
-   // repeat and execute as long as the enemy-robot is alive 
+    if (isPlayerTurn) {
+      //ask player if they'd like to fight or skip using fightOrSkip function
   if (fightOrSkip()) {
     // if true, leave fight by breaking loop
     break;
@@ -69,10 +75,10 @@ var fight = function(enemy) {
     } else {
       window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
     }
-
-    // remove players's health by subtracting the amount set in the enemy.attack variable
+    // player gets attacked first
+   } else {
     var damage = randomNumber(enemy.attack - 3, enemy.attack);
-
+    // remove players's health by subtracting the amount set in the enemy.attack variable
     playerInfo.health = Math.max(0, playerInfo.health - damage);
     
     console.log(
@@ -87,7 +93,10 @@ var fight = function(enemy) {
     } else {
       window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
     }
-  } // end of while loop
+  } 
+  // switch turn for next round
+  isPlayerTurn = !isPlayerTurn;
+}
 }; // end of fight function
 
 // function to start a new game
